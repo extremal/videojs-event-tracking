@@ -33,6 +33,7 @@ const PerformanceTracking = function(config) {
   let bufferDuration = 0;
   let initialLoadTime = 0;
   let timestamps = [];
+  let currentTime = 0;
 
   const reset = function() {
     seekCount = 0;
@@ -53,7 +54,8 @@ const PerformanceTracking = function(config) {
       totalDuration,
       watchedDuration,
       bufferDuration,
-      initialLoadTime
+      initialLoadTime,
+      currentTime
     };
 
     config.performance.call(player, data);
@@ -97,7 +99,8 @@ const PerformanceTracking = function(config) {
     pauseCount = data.pauseCount;
   });
   player.on('tracking:buffered', function(e, data) {
-    ({ bufferCount } = data);
+    ({ bufferCount, currentTime } = data);
+    console.log(data);
     bufferDuration = +(bufferDuration + data.secondsToLoad).toFixed(3);
   });
   player.on('tracking:firstplay', function(e, data) {
